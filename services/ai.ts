@@ -17,7 +17,7 @@ async function callAI(messages: any[], temperature: number = 0.7, jsonMode: bool
         'Authorization': `Bearer ${API_KEY}`
       },
       body: JSON.stringify({
-        model: 'gemini', 
+        model: 'openai-reasoning', 
         messages: messages,
         temperature: temperature,
         response_format: jsonMode ? { type: "json_object" } : undefined
