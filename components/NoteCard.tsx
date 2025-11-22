@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { motion, useMotionValue, useTransform, PanInfo } from 'framer-motion';
 import { Pin, PinOff, Trash2, Clock, Pencil, RotateCcw } from 'lucide-react';
@@ -95,7 +96,7 @@ export const NoteCard: React.FC<NoteCardProps> = ({ note, onPin, onDelete, onEdi
             </div>
         )}
 
-        <div className="prose prose-invert max-w-none text-text prose-p:my-1 prose-headings:my-2 prose-ul:my-1 prose-li:my-0 prose-a:text-primary">
+        <div className="prose max-w-none text-text prose-p:my-1 prose-headings:my-2 prose-ul:my-1 prose-li:my-0 prose-a:text-primary">
           <ReactMarkdown 
             remarkPlugins={[remarkGfm]}
             components={{

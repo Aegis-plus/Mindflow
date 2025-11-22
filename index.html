@@ -16,7 +16,7 @@
     <link rel="icon" type="image/svg+xml" href="/icon.svg" />
     <link rel="apple-touch-icon" href="/icon.svg" />
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
     <script>
       tailwind.config = {
         darkMode: 'class',
@@ -31,7 +31,29 @@
               primary: 'var(--color-primary)',
               secondary: 'var(--color-secondary)',
               danger: 'var(--color-danger)',
-            }
+            },
+            typography: ({ theme }) => ({
+              DEFAULT: {
+                css: {
+                  '--tw-prose-body': theme('colors.text'),
+                  '--tw-prose-headings': theme('colors.text'),
+                  '--tw-prose-lead': theme('colors.subtext'),
+                  '--tw-prose-links': theme('colors.primary'),
+                  '--tw-prose-bold': theme('colors.text'),
+                  '--tw-prose-counters': theme('colors.subtext'),
+                  '--tw-prose-bullets': theme('colors.subtext'),
+                  '--tw-prose-hr': theme('colors.surface'),
+                  '--tw-prose-quotes': theme('colors.text'),
+                  '--tw-prose-quote-borders': theme('colors.primary'),
+                  '--tw-prose-captions': theme('colors.subtext'),
+                  '--tw-prose-code': theme('colors.primary'),
+                  '--tw-prose-pre-code': theme('colors.text'),
+                  '--tw-prose-pre-bg': theme('colors.surface'),
+                  '--tw-prose-th-borders': theme('colors.surface'),
+                  '--tw-prose-td-borders': theme('colors.surface'),
+                },
+              },
+            }),
           }
         }
       }
@@ -91,10 +113,9 @@
   }
 }
 </script>
-<link rel="stylesheet" href="/index.css">
 </head>
   <body>
     <div id="root"></div>
-  <script type="module" src="/index.tsx"></script>
-</body>
+    <script type="module" src="/index.tsx"></script>
+  </body>
 </html>
