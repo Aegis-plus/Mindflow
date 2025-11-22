@@ -1,7 +1,8 @@
+
 {
   "name": "MindFlow",
   "short_name": "MindFlow",
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#1e1e2e",
   "theme_color": "#1e1e2e",
@@ -9,7 +10,7 @@
   "scope": "/",
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"
