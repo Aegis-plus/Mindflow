@@ -47,7 +47,7 @@ export const formatNoteMagic = async (text: string): Promise<{ content: string, 
     3. Identify generic "Notes" and list them as bullet points.
     4. Generate 2-4 relevant, short hashtags (e.g., "Work", "Shopping").
     5. Return valid JSON object with keys: "markdown" (string) and "tags" (array of strings).
-    6. CRITICAL: Do NOT translate. If the input is in Spanish, output structured Spanish. Keep the vocabulary and language matching the input exactly.
+    6. CRITICAL: Do NOT translate. Maintain the original language of the text.
   `;
 
   const result = await callAI([
