@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { NotebookPen, MessageSquare, Settings as SettingsIcon, Plus } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -18,7 +19,21 @@ function App() {
   const [isInputOpen, setIsInputOpen] = useState(false);
   const [editingNote, setEditingNote] = useState<Note | null>(null);
   
-  const [theme, setTheme] = useState<'mocha' | 'latte'>('mocha');
+  // Theme State with Persistence logic
+  const [theme, setTheme] = useState<'mocha' | 'latte'>(() => {
+    try {
+      const saved = localStorage.getItem('mindflow_theme');
+      if (saved === 'mocha' || saved === 'latte') return saved;
+      
+      // Fallback to system preference
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+        return 'latte';
+      }
+    } catch (e) {
+      console.warn("LocalStorage access denied", e);
+    }
+    return 'mocha';
+  });
 
   // Modal State
   const [confirmModal, setConfirmModal] = useState<{
@@ -31,17 +46,12 @@ function App() {
     onConfirm: () => {},
   });
 
-  // Initialize
+  // Initialize Notes
   useEffect(() => {
     setNotes(getNotes());
-    
-    // Check system preference for theme initially
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-        setTheme('latte');
-    }
   }, []);
 
-  // Apply theme
+  // Apply Theme & Persist
   useEffect(() => {
     const root = document.documentElement;
     if (theme === 'latte') {
@@ -49,6 +59,7 @@ function App() {
     } else {
       root.removeAttribute('data-theme');
     }
+    localStorage.setItem('mindflow_theme', theme);
   }, [theme]);
 
   const requestConfirm = (message: string, onConfirm: () => void) => {
@@ -138,6 +149,8 @@ function App() {
 
   const handleClearAll = () => {
     localStorage.clear();
+    // Preserve theme after clear
+    localStorage.setItem('mindflow_theme', theme);
     setNotes([]);
   };
 
