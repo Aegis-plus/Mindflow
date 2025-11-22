@@ -1,7 +1,7 @@
 import { Note, AIResponse } from '../types';
 
-const API_ENDPOINT = process.env.VITE_API_ENDPOINT || 'https://enter.pollinations.ai/api/generate/v1/chat/completions';
-const API_KEY = process.env.VITE_API_KEY || '';
+const API_ENDPOINT = process.env.VITE_API_ENDPOINT;
+const API_KEY = process.env.VITE_API_KEY;
 
 // Helper for making API calls
 async function callAI(messages: any[], temperature: number = 0.7, jsonMode: boolean = false): Promise<string> {
@@ -17,7 +17,7 @@ async function callAI(messages: any[], temperature: number = 0.7, jsonMode: bool
         'Authorization': `Bearer ${API_KEY}`
       },
       body: JSON.stringify({
-        model: 'openai-reasoning', 
+        model: 'openai', 
         messages: messages,
         temperature: temperature,
         response_format: jsonMode ? { type: "json_object" } : undefined
@@ -47,7 +47,7 @@ export const formatNoteMagic = async (text: string): Promise<{ content: string, 
     3. Identify generic "Notes" and list them as bullet points.
     4. Generate 2-4 relevant, short hashtags (e.g., "Work", "Shopping").
     5. Return valid JSON object with keys: "markdown" (string) and "tags" (array of strings).
-    6. CRITICAL: Do NOT translate. Maintain the original language of the text.
+    6. CRITICAL: Detect the language of the input text. The output "markdown" content MUST be in the EXACT SAME language as the input. Do NOT translate.
   `;
 
   const result = await callAI([
@@ -80,7 +80,7 @@ export const summarizeText = async (text: string): Promise<{ content: string, ta
     2. Follow with a bulleted list of key details/takeaways.
     3. Generate 2-3 relevant tags (e.g., "Summary", "Research").
     4. Return valid JSON object with keys: "markdown" (string) and "tags" (array of strings).
-    5. CRITICAL: Do NOT translate. Maintain the original language of the text.
+    5. CRITICAL: Detect the language of the input text. The output "markdown" content MUST be in the EXACT SAME language as the input. Do NOT translate.
   `;
 
   const result = await callAI([
