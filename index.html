@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -8,12 +9,12 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>MindFlow</title>
     
-    <!-- PWA Manifest (Embedded as Data URI to avoid 404s on static hosts) -->
-    <link rel="manifest" href='data:application/manifest+json,{"name":"MindFlow","short_name":"MindFlow","start_url":".","display":"standalone","background_color":"#1e1e2e","theme_color":"#1e1e2e","orientation":"portrait","icons":[{"src":"data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 512 512%27%3E%3Crect width=%27512%27 height=%27512%27 rx=%27120%27 fill=%27%231e1e2e%27/%3E%3Cpath d=%27M140 256C140 160 372 160 372 256C372 352 140 352 140 256%27 stroke=%27%23cba6f7%27 stroke-width=%2748%27 fill=%27none%27 stroke-linecap=%27round%27/%3E%3Ccircle cx=%27256%27 cy=%27256%27 r=%2748%27 fill=%27%23f5c2e7%27/%3E%3C/svg%3E","sizes":"192x192 512x512","type":"image/svg+xml"}]}'>
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
     
-    <!-- Favicon & Icons (SVG Data URI for offline support) -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='120' fill='%231e1e2e'/%3E%3Cpath d='M140 256C140 160 372 160 372 256C372 352 140 352 140 256' stroke='%23cba6f7' stroke-width='48' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='256' cy='256' r='48' fill='%23f5c2e7'/%3E%3C/svg%3E" />
-    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='120' fill='%231e1e2e'/%3E%3Cpath d='M140 256C140 160 372 160 372 256C372 352 140 352 140 256' stroke='%23cba6f7' stroke-width='48' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='256' cy='256' r='48' fill='%23f5c2e7'/%3E%3C/svg%3E" />
+    <!-- Favicon & Icons -->
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <link rel="apple-touch-icon" href="/icon.svg" />
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -90,9 +91,10 @@
   }
 }
 </script>
+<link rel="stylesheet" href="/index.css">
 </head>
   <body>
     <div id="root"></div>
-      <script type="module" src="/index.tsx"></script>
-  </body>
+  <script type="module" src="/index.tsx"></script>
+</body>
 </html>

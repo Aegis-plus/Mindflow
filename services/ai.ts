@@ -5,6 +5,10 @@ const API_KEY = process.env.VITE_API_KEY || '';
 
 // Helper for making API calls
 async function callAI(messages: any[], temperature: number = 0.7, jsonMode: boolean = false): Promise<string> {
+  if (!navigator.onLine) {
+    throw new Error("You are currently offline. Please check your internet connection to use AI features.");
+  }
+
   try {
     const response = await fetch(API_ENDPOINT, {
       method: 'POST',
