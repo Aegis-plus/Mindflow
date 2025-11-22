@@ -206,7 +206,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 - **Issues**: Report bugs on [GitHub Issues](https://github.com/yourusername/mindflow/issues)
 - **Discussions**: Share ideas and feedback in [GitHub Discussions](https://github.com/yourusername/mindflow/discussions)
-- **Email**: [your-email@example.com]
+- **Email**: [mail@aegis-plus.my.id]
 
 ---
 
