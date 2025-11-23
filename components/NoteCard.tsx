@@ -95,6 +95,10 @@ export const NoteCard: React.FC<NoteCardProps> = ({ note, onPin, onDelete, onEdi
                 <Pin size={12} fill="currentColor" />
             </div>
         )}
+        
+        {note.title && (
+            <h3 className="text-lg font-bold text-text leading-tight mb-3">{note.title}</h3>
+        )}
 
         <div className="prose max-w-none text-text prose-p:my-1 prose-headings:my-2 prose-ul:my-1 prose-li:my-0 prose-a:text-primary">
           <ReactMarkdown 

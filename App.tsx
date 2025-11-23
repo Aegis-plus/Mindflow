@@ -73,10 +73,11 @@ function App() {
     });
   };
 
-  const handleSaveNote = (content: string, type: 'raw' | 'formatted' | 'summary', tags: string[], originalContent?: string) => {
+  const handleSaveNote = (title: string, content: string, type: 'raw' | 'formatted' | 'summary', tags: string[], originalContent?: string) => {
     if (editingNote) {
         const updated: Note = {
             ...editingNote,
+            title,
             content,
             type,
             tags,
@@ -89,6 +90,7 @@ function App() {
     } else {
         const newNote: Note = {
             id: Date.now().toString(),
+            title,
             content,
             createdAt: Date.now(),
             isArchived: false,

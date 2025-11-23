@@ -50,10 +50,10 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ notes }) => {
   };
 
   return (
-    <div className="w-full h-full relative bg-bg">
-       {/* Messages Area - Absolute to fill space, with padding bottom to clear input */}
-       <div className="absolute inset-0 overflow-y-auto px-4 pt-4 pb-32">
-         <div className="space-y-4">
+    <div className="flex flex-col h-full w-full relative">
+       {/* Messages Area */}
+       <div className="flex-1 overflow-y-auto w-full px-4 pt-4">
+         <div className="space-y-4 pb-4">
            {messages.map((msg) => (
              <motion.div
                initial={{ opacity: 0, y: 10 }}
@@ -100,8 +100,8 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ notes }) => {
          </div>
        </div>
 
-       {/* Input Area - Absolutely positioned at the bottom */}
-       <div className="absolute bottom-0 left-0 right-0 p-4 pb-24 bg-gradient-to-t from-bg via-bg to-transparent z-10">
+       {/* Input Area - Stays at bottom */}
+       <div className="w-full p-4 pb-24 bg-gradient-to-t from-bg via-bg to-transparent z-10">
           <div className="flex gap-2 bg-surface p-2 rounded-full border border-white/5 shadow-lg max-w-3xl mx-auto">
             <input
                 type="text"

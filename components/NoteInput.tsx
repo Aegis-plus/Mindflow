@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, X, Sparkles, Send, Hash, FileText } from 'lucide-react';
@@ -5,7 +6,7 @@ import { formatNoteMagic, rewriteTone, summarizeText } from '../services/ai';
 import { Note } from '../types';
 
 interface NoteInputProps {
-  onSave: (content: string, type: 'raw' | 'formatted' | 'summary', tags: string[], originalContent?: string) => void;
+  onSave: (title: string, content: string, type: 'raw' | 'formatted' | 'summary', tags: string[], originalContent?: string) => void;
   isOpen: boolean;
   onClose: () => void;
   initialNote?: Note | null;
@@ -13,6 +14,7 @@ interface NoteInputProps {
 }
 
 export const NoteInput: React.FC<NoteInputProps> = ({ onSave, isOpen, onClose, initialNote, requestConfirm }) => {
+  const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [tags, setTags] = useState<string>("");
   const [isProcessing, setIsProcessing] = useState(false);
@@ -22,13 +24,23 @@ export const NoteInput: React.FC<NoteInputProps> = ({ onSave, isOpen, onClose, i
   useEffect(() => {
     if (isOpen) {
       if (initialNote) {
+        setTitle(initialNote.title || "");
         setText(initialNote.content);
         setTags(initialNote.tags?.join(', ') || "");
       } else {
+        setTitle("");
         setText("");
         setTags("");
       }
-      setTimeout(() => textareaRef.current?.focus(), 100);
+      // Focus logic
+      setTimeout(() => {
+          if (!initialNote?.title) {
+              // Use logic here if you want to focus title first
+              textareaRef.current?.focus();
+          } else {
+              textareaRef.current?.focus();
+          }
+      }, 100);
     }
   }, [isOpen, initialNote]);
 
@@ -37,10 +49,9 @@ export const NoteInput: React.FC<NoteInputProps> = ({ onSave, isOpen, onClose, i
   };
 
   const handleSubmit = () => {
-    if (!text.trim()) return;
-    onSave(text, initialNote ? initialNote.type : 'raw', getTagsArray());
-    setText("");
-    setTags("");
+    if (!text.trim() && !title.trim()) return;
+    onSave(title, text, initialNote ? initialNote.type : 'raw', getTagsArray());
+    resetForm();
     onClose();
   };
 
@@ -51,15 +62,17 @@ export const NoteInput: React.FC<NoteInputProps> = ({ onSave, isOpen, onClose, i
         const rawText = text; // Capture raw text before processing
         setIsProcessing(true);
         try {
-          const { content, tags: aiTags } = await formatNoteMagic(rawText);
+          const { title: aiTitle, content, tags: aiTags } = await formatNoteMagic(rawText);
           // Merge existing tags with AI tags
           const currentTags = getTagsArray();
           const mergedTags = Array.from(new Set([...currentTags, ...aiTags]));
           
+          // Use user's title if present, otherwise use AI title
+          const finalTitle = title.trim() ? title : aiTitle;
+          
           // Pass rawText as originalContent so we can Undo later
-          onSave(content, 'formatted', mergedTags, rawText);
-          setText("");
-          setTags("");
+          onSave(finalTitle, content, 'formatted', mergedTags, rawText);
+          resetForm();
           onClose();
         } catch (e) {
           alert("Failed to generate magic format. Please try again.");
@@ -76,13 +89,14 @@ export const NoteInput: React.FC<NoteInputProps> = ({ onSave, isOpen, onClose, i
         const rawText = text;
         setIsProcessing(true);
         try {
-            const { content, tags: aiTags } = await summarizeText(rawText);
+            const { title: aiTitle, content, tags: aiTags } = await summarizeText(rawText);
             const currentTags = getTagsArray();
             const mergedTags = Array.from(new Set([...currentTags, ...aiTags]));
 
-            onSave(content, 'summary', mergedTags, rawText);
-            setText("");
-            setTags("");
+            const finalTitle = title.trim() ? title : aiTitle;
+
+            onSave(finalTitle, content, 'summary', mergedTags, rawText);
+            resetForm();
             onClose();
         } catch (e) {
             alert("Failed to generate summary. Please try again.");
@@ -95,9 +109,20 @@ export const NoteInput: React.FC<NoteInputProps> = ({ onSave, isOpen, onClose, i
   const handleToneSwitch = async (newTone: string) => {
     if (!text.trim()) return;
     setIsProcessing(true);
-    const rewritten = await rewriteTone(text, newTone);
-    setText(rewritten);
-    setIsProcessing(false);
+    try {
+      const rewritten = await rewriteTone(text, newTone);
+      setText(rewritten);
+    } catch (e) {
+      // handle error
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const resetForm = () => {
+      setTitle("");
+      setText("");
+      setTags("");
   };
 
   return (
@@ -133,6 +158,15 @@ export const NoteInput: React.FC<NoteInputProps> = ({ onSave, isOpen, onClose, i
                 <X size={24} />
               </button>
             </div>
+
+            {/* Title Input */}
+            <input
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Title (optional)"
+                className="w-full bg-transparent text-2xl font-bold text-text placeholder:text-subtext/30 outline-none mb-4"
+            />
 
             {/* Input */}
             <textarea
@@ -174,7 +208,7 @@ export const NoteInput: React.FC<NoteInputProps> = ({ onSave, isOpen, onClose, i
             <div className="grid grid-cols-3 gap-3">
               <button
                 onClick={handleSubmit}
-                disabled={!text.trim()}
+                disabled={!text.trim() && !title.trim()}
                 className="py-3 rounded-xl bg-surface text-text font-semibold flex flex-col justify-center items-center gap-1 active:scale-[0.98] transition-transform disabled:opacity-50 text-xs"
               >
                 <Send size={18} />

@@ -1,5 +1,7 @@
+
 export interface Note {
   id: string;
+  title?: string;
   content: string;
   originalContent?: string; // Keep the "mess" if we want to revert
   createdAt: number;
